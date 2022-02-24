@@ -66,30 +66,41 @@ public class Main {
             }
 
             projects[i] = new Project(name, days, score, bestBefore, decidingFactor, reqContributors, reqSkills);
+            nextProjectPosition += reqContributors + 1;
+        }
 
+        for (int i = 0; i < numberOfProjects; i++) { // sorting
+            for (int j = 0; j < numberOfProjects - 1; j++) {
+                if (projects[j].decidingFactor < projects[j + 1].decidingFactor) {
+                    Project temp = projects[j];
+                    projects[j] = projects[j + 1];
+                    projects[j + 1] = temp;
+                }
+            }
         }
 
         System.out.println(Arrays.toString(projects));
+        for (int s = 0; s < projects.length; s++) {
 
-        Project selectproject = projects[3]; // webchat
+            Project selectproject = projects[s]; // select a project.
 
-        for (int z = 0; z < selectproject.requiredSkills.length; z++) {
-            Skill reqskills = selectproject.requiredSkills[z];
+            for (int z = 0; z < selectproject.requiredSkills.length; z++) {
+                Skill reqskills = selectproject.requiredSkills[z];
 
-            for (int i = 0; i < numberOfContributors; i++) {
+                for (int i = 0; i < numberOfContributors; i++) {
 
-                for (int j = 0; j < contributors[i].skills.length; j++) {
-                    if (reqskills.equals(contributors[i].skills[j])) {
-                        if (reqskills.skillLevel >= selectproject.requiredSkills[j].skillLevel) {
-                            assignedcontributors[j] = contributors[i].name;
+                    for (int j = 0; j < contributors[i].skills.length; j++) {
+                        if (reqskills.equals(contributors[i].skills[j])) {
+                            if (reqskills.skillLevel >= selectproject.requiredSkills[j].skillLevel) {
+                                assignedcontributors[j] = contributors[i].name;
+                            }
                         }
                     }
                 }
+                Arrays.sort(assignedcontributors);
+                String assignedname = assignedcontributors[0];
+                System.out.println(assignedname);
             }
-            Arrays.sort(assignedcontributors);
-            String assignedname = assignedcontributors[0];
         }
-
     }
-
 }
